@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "decoder"
+version = "1.1.0"
+description = "Multi-agent team system that fully decodes GitHub repositories"
+requires-python = ">=3.12"
+readme = { text = "Decoder - full repo decode via hierarchical agent teams", content-type = "text/markdown" }
+authors = [{ name = "Gabriel Alonso", email = "gabriel@focus-ai.io" }]
+license = { file = "LICENSE.md" }
+dependencies = [
+    "typer>=0.12",
+    "rich>=13.7",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "anyio>=4.4",
+]
+
+[project.optional-dependencies]
+analysis = [
+    "gitpython>=3.1",
+    # tree-sitter-language-pack >= 1.8.0 ships a vendored native Parser via
+    # get_parser() whose .parse() rejects bytes (TypeError: 'bytes' object is
+    # not an instance of 'str'), silently zeroing static analysis. parser.py
+    # works around this by building the canonical tree_sitter.Parser from
+    # get_language(). Floors are bumped to the modern, in-use versions to avoid
+    # the dev/runtime drift (1.6.2 vs 1.8.1) that previously masked the bug.
+    "tree-sitter>=0.25",
+    "tree-sitter-language-pack>=1.8",
+    "networkx>=3.3",
+]
+knowledge = [
+    "chromadb>=0.5",
+    "sentence-transformers>=3.0",
+]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "mypy>=1.11",
+]
+
+[project.scripts]
+decoder = "decoder.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["decoder"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["tests/fixtures/**"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["E501", "B008"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

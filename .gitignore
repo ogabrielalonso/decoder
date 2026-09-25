@@ -1,0 +1,33 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.env
+.env.local
+
+docs/decode/*/
+docs/compare/*/
+!docs/decode/.gitkeep
+!docs/compare/.gitkeep
+
+.decoder_cache/
+workspace/
+
+# local-only design notes: may reference fixture repos analyzed during
+# development (real third-party code), never meant for the public repo
+docs/design/
+
+# Claude Code: local settings stay private; the /decode commands and workflow ship
+.claude/*
+!.claude/commands/
+!.claude/workflows/
+
+# macOS
+.DS_Store
